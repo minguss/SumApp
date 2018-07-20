@@ -1,0 +1,22 @@
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: sumapp
+  labels:
+    app: sumapp
+spec:
+  selector:
+    matchLabels:
+      app: sumapp
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: sumapp
+    spec:
+      containers:
+      - name: sumapp
+        image: coc.icp:8500/demo/sumapp
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9080
