@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: sumapp
-        image: icpdevops.icp:8500/demo/sumapp
+        image: mycluster.icp:8500/default/sumapp
         imagePullPolicy: Always
         ports:
         - containerPort: 9080
