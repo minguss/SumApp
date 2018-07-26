@@ -33,7 +33,7 @@ podTemplate(label: label,
 	  }
 	  stage('Build Docker image') {
 		container('docker') {
-		  docker.withRegistry("${dockerRegistry}", 'icp-id') {
+		  docker.withRegistry("${dockerRegistry}", 'registry-credentials') {
 			sh "docker build -t ${image}:${tag} ."
 			sh "docker push ${image}:${tag}"
 			sh "docker tag ${image}:${tag} ${image}:latest"
@@ -44,7 +44,7 @@ podTemplate(label: label,
 	  stage( 'Clean Up Existing Deployments' ) {
 		container('kubectl') {
 		  withCredentials([[$class: 'UsernamePasswordMultiBinding',
-							  credentialsId: 'icp-id',
+							  credentialsId: 'registry-credentials',
 							  usernameVariable: 'DOCKER_HUB_USER',
 							  passwordVariable: 'DOCKER_HUB_PASSWORD']]) {
 			  
@@ -55,7 +55,7 @@ podTemplate(label: label,
 	  stage( 'Deploy to Cluster' ) {
 		container('kubectl') {
 		  withCredentials([[$class: 'UsernamePasswordMultiBinding',
-							  credentialsId: 'icp-id',
+							  credentialsId: 'registry-credentials',
 							  usernameVariable: 'DOCKER_HUB_USER',
 							  passwordVariable: 'DOCKER_HUB_PASSWORD']]) {
 			  
