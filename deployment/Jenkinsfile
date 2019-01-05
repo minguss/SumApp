@@ -1,4 +1,15 @@
 def label = "sumapp-${UUID.randomUUID().toString()}"
+def notifyStarted() {
+    slackSend (color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+}
+
+def notifySuccessful() {
+    slackSend (color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+}
+
+def notifyFailed() {
+  slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+}
 podTemplate(label: label, 
 	containers: [
 	  containerTemplate(name: 'maven', image: 'maven:3.3.9-jdk-8-alpine', ttyEnabled: true, command: 'cat'),
@@ -9,10 +20,11 @@ podTemplate(label: label,
 	) {
 	
 	node(label) {
+	try {
 		
 	  
 	  stage('Get Source') {
-		git "https://github.com/minguss/SumApp.git"
+		git "http://gitlab.192.168.1.141.nip.io/minguss/SumApp.git"
 	  }
 
 	  def props = readProperties  file:'deployment/pipeline.properties'
@@ -72,5 +84,10 @@ podTemplate(label: label,
 		  }
 		}
 	  }
-	}
+	  notifySuccessful()
+	  } catch(e) {
+        currentBuild.result = "FAILED"
+        notifyFailed()
+    }
   }
+}
