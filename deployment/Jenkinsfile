@@ -45,13 +45,15 @@ podTemplate(label: label,
 			sh "mvn -B clean package"
 		}
 	  }
+		/*
 	  stage('Inspection Code') {
 		container('maven') {
 			sh "mvn sonar:sonar \
 				  -Dsonar.host.url=http://192.168.1.131:30124 \
-				  -Dsonar.login=247074cea0e0315e75ce96f53769a1201177628f"
+				  -Dsonar.login="
 		}
 	  }
+	  */
 	  stage('Build Docker image') {
 		container('docker') {
 		  docker.withRegistry("${dockerRegistry}", 'registry-credentials') {
