@@ -30,7 +30,7 @@ podTemplate(label: label,
 	  }
 
 	  def props = readProperties  file:'deployment/pipeline.properties'
-	  def tag = props['version']
+	  def tag = VersionNumber (versionNumberString: '${BUILD_DATE_FORMATTED, "yyyyMMdd"}-develop-${BUILDS_TODAY}')
 	  def gitSrc = props['gitSrc']
 	  def dockerRegistry = props['dockerRegistry']
 	  def image = props['image']
