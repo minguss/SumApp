@@ -76,6 +76,10 @@ podTemplate(label: label,
 		  }
 		}
 	  }
+		
+//		stage( "Approver" ){
+//		    input "배포를 승인하시겠습니까?"
+//		}
 	  stage( 'Deploy to Cluster' ) {
 		container('kubectl') {
 		  withCredentials([[$class: 'UsernamePasswordMultiBinding',
