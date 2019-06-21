@@ -66,8 +66,10 @@ podTemplate(label: label,
 		}
 	  }
 	  stage('Image Vulnerability Scanning') {
+		  container('docker'){
 		  aquaMicroscanner imageName: 'devcluster.icp:8500/devops/sumapp:latest', notCompliesCmd: '', onDisallowed: 'ignore', outputFormat: 'html'
-	  }
+		  }
+		  }
 	  stage( 'Clean Up Existing Deployments' ) {
 		container('kubectl') {
 		  withCredentials([[$class: 'UsernamePasswordMultiBinding',
