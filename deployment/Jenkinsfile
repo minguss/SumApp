@@ -22,9 +22,9 @@ podTemplate(label: label,
 	) {
 	
 	node(label) {
-	//try {
+	try {
 		
-	  
+	  hubotSend message: "*Release Started*. \n Releasing Test Project. :sunny: \n<!here> <!channel> <@nrayapati> ", tokens: "BUILD_NUMBER,BUILD_ID", status: 'STARTED'
 	  stage('Get Source') {
 		git "https://github.com/minguss/SumApp.git"
 	  }
@@ -82,9 +82,10 @@ podTemplate(label: label,
 		}
 	  }
 		
-//		stage( "Approver" ){
+		stage( "Approver" ){
 //		    input "배포를 승인하시겠습니까?"
-//		}
+		hubotApprove message: 'Promote to Production?'
+		}
 	  stage( 'Deploy to Cluster' ) {
 		container('kubectl') {
 		  withCredentials([[$class: 'UsernamePasswordMultiBinding',
@@ -98,12 +99,14 @@ podTemplate(label: label,
 		  }
 		}
 	  }
-		/*
-	  notifySuccessful()
+		
+//	  notifySuccessful()
+	  hubotSend message: "*Release Completed*. \n Releasing Test Project.", tokens: "BUILD_NUMBER,BUILD_ID", status: 'SUCCESS'
 	  } catch(e) {
+	  hubotSend message: "*Release Failed*. 
         currentBuild.result = "FAILED"
-        notifyFailed()
+//        notifyFailed()
     }
-    */
+
   }
 }
