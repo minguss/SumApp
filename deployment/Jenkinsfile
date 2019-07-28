@@ -103,7 +103,7 @@ podTemplate(label: label,
 //	  notifySuccessful()
 	  hubotSend message: "*Release Completed*. \n Releasing Test Project.", tokens: "BUILD_NUMBER,BUILD_ID", status: 'SUCCESS'
 	  } catch(e) {
-	  hubotSend message: "*Release Failed*. 
+	  hubotSend message: "*Release Failed*."
         currentBuild.result = "FAILED"
 //        notifyFailed()
     }
